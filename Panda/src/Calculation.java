@@ -90,6 +90,7 @@ public class Calculation {
 							pro = pro * (1.0 - p);
 						}
 						lastdistance = thisdistance;
+						result.put(positionID,pro);
 					}
 					
 				}

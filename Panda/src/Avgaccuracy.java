@@ -7,12 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
+
+
 
 
 public class Avgaccuracy {
 
 	public static void test_acc(
-		) throws Exception
+			) throws Exception
 
 	{
 		BufferedReader br = new BufferedReader(new FileReader("C:/Users/RKotian/Documents/Information Retrieval/Project/shanghai_taxi/shanghai_taxi/positionIDbyCar/02210.txt"));
@@ -47,7 +50,7 @@ public class Avgaccuracy {
 		double avgaccuracy = 0.0;
 		int count = 0;
 		int c = 0;
-		
+
 		ArrayList<HashMap<String, Double>> knownpr = new ArrayList<HashMap<String, Double>>();
 
 		ArrayList<String> builder = new ArrayList<String>();
@@ -58,6 +61,7 @@ public class Avgaccuracy {
 		int j = 1;
 		String current = "";
 		String next = "";
+		String last = "";
 		int i = 0;
 		int n = data.size();
 
@@ -72,8 +76,11 @@ public class Avgaccuracy {
 
 			current = data.get(i);
 			next = data.get(i+j);
+
 			/* Checks if the next cell number is different from the current cell number*/
 			if (!data.get(i+j).equals(data.get(i))){
+
+
 
 
 				//	if (data.get(i+1).equals(data.get(i))) continue;
@@ -91,6 +98,15 @@ public class Avgaccuracy {
 				j = j + 1;
 				}
 
+					if(!last.equals("")){
+					if(last.equals(data.get(i+j)))
+					{
+						//i = i ;
+						j = j + 1;
+						continue;
+					}
+				}
+				 
 				String thisposition = data.get(i);
 				String realDestination = data.get(i+j);
 				//		ArrayList<HashMap<String, Double>> knownpr = new ArrayList<HashMap<String, Double>>();
@@ -105,8 +121,30 @@ public class Avgaccuracy {
 
 				HashMap<String, Double> predictedvector = Calculation.predictedvector(knownpr, lastposition, count, p, LatitudeGridNum, LongitudeGridNum);
 
+
 				double thisaccuracy = 0.0;
 				if (predictedvector.containsKey(realDestination)) thisaccuracy = predictedvector.get(realDestination);
+
+				/* Making sure that it does not return back*/
+
+			/*	Iterator it = adjacent.iterator();
+				double minacc = thisaccuracy;
+				while(it.hasNext()){
+					String temp = (String) it.next();
+					if(minacc > predictedvector.get(temp)){
+						minacc = predictedvector.get(temp);
+					}
+					
+					if(thisaccuracy > minacc)
+					{
+						j = j + 1;
+						break label1;
+					}
+				}
+			*/		
+
+
+				
 
 				//sumaccuracy = sumaccuracy + thisaccuracy;
 
@@ -119,6 +157,7 @@ public class Avgaccuracy {
 
 
 				lastposition = thisposition;	
+				last = data.get(i);
 
 				if(count % 7 == 0){
 					count =  0;
@@ -134,10 +173,11 @@ public class Avgaccuracy {
 				}
 
 			}
+
 			i = i + j;
 			j = 1;
 		}
-			/*		for(int k=0;k<builder.size();k++) {
+		/*		for(int k=0;k<builder.size();k++) {
 			int maxSubList = builder.subList(k,builder.size()).size();
 			if(maxSubList<7) break;  //exit loop if subList size < 7
 
@@ -150,28 +190,28 @@ public class Avgaccuracy {
 				double in = Double.parseDouble (s[3]);
 				sumaccuracy = sumaccuracy + in;
 			} 
-			 */
-			String resultfile =  Integer.toString(c+1);
-			resultfile = resultfile + ".txt";
-			WriteFile.writefile(root + outputdirectory + outdir + resultfile, sb);
-			sb.delete(0, sb.length());
-			//	c = c+1;
+		 */
+		String resultfile =  Integer.toString(c+1);
+		resultfile = resultfile + ".txt";
+		WriteFile.writefile(root + outputdirectory + outdir + resultfile, sb);
+		sb.delete(0, sb.length());
+		//	c = c+1;
 
-	//	WriteFile.writefile(root + outputdirectory + "result.txt", sb);
-		
-			
+		//	WriteFile.writefile(root + outputdirectory + "result.txt", sb);
 
-			avgaccuracy = avgaccuracy / (c);
-			System.out.println(" accuracy is : " + avgaccuracy);
-			//	double avgaccuracy = sumaccuracy / count;
-			double endtime = System.currentTimeMillis();
-			double avgtime = (endtime - begintime);
-			//	double avgtime = (endtime - begintime) / count;
-			double memory = runtime.totalMemory() - runtime.freeMemory();
-			System.out.println("The average accuracy is " + avgaccuracy);
-			System.out.println("The average time is " + avgtime);
-			System.out.println("The used memory is " + memory);
-			System.out.println("The number of data is " + count);
-		}
+
+
+		avgaccuracy = avgaccuracy / (c);
+		System.out.println(" accuracy is : " + avgaccuracy);
+		//	double avgaccuracy = sumaccuracy / count;
+		double endtime = System.currentTimeMillis();
+		double avgtime = (endtime - begintime);
+		//	double avgtime = (endtime - begintime) / count;
+		double memory = runtime.totalMemory() - runtime.freeMemory();
+		System.out.println("The average accuracy is " + avgaccuracy);
+		System.out.println("The average time is " + avgtime);
+		System.out.println("The used memory is " + memory);
+		System.out.println("The number of data is " + count);
 	}
+}
 

@@ -137,6 +137,7 @@ public class MainClassReadFile {
 		File[] files = new File(root).listFiles();
 		for (int i = 0; i < files.length; i++) {
 			String inputdirectory = files[i].getName();
+			//if (inputdirectory.length() != 6) continue;
 			if (inputdirectory.length() != 6) continue;
 			inputdirectory = inputdirectory + "/";
 			String pathandfilename = root + inputdirectory + carFilename;
@@ -180,7 +181,8 @@ public class MainClassReadFile {
 			
 		}
 		String outputfilename = Integer.toString(carID);
-		int zero = 5 - outputfilename.length();
+		//int zero = 5 - outputfilename.length();
+		int zero = 6 - outputfilename.length();
 		for (int j = 0; j < zero; j++) outputfilename = "0" + outputfilename;
 		outputfilename = outputfilename + ".txt";
 		WriteFile.writefile(root + mediandirectory + outputfilename, sb);
@@ -212,6 +214,7 @@ public class MainClassReadFile {
 			checked.add(randnum);
 			String filename = files[randnum].getName();
 			carIDSet.add(Integer.parseInt(filename.substring(1, filename.length() - 4)));
+			carIDSet.add(Integer.parseInt(filename.substring(1, filename.length() - 5)));
 		}
 	}
 	
@@ -233,6 +236,7 @@ public class MainClassReadFile {
 		{
 			String filename = files[i].getName();
 			carIDSet.add(Integer.parseInt(filename.substring(1, filename.length() - 4)));
+			//carIDSet.add(Integer.parseInt(filename.substring(1, filename.length() - 5)));
 		}
 	
 	}
